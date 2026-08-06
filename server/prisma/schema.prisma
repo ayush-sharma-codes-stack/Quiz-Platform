@@ -1,0 +1,138 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String      @id @default(uuid())
+  name          String
+  email         String      @unique
+  passwordHash  String
+  role          String      @default("STUDENT") // ADMIN or STUDENT
+  status        String      @default("ACTIVE")  // ACTIVE or DEACTIVATED
+  xp            Int         @default(0)
+  level         Int         @default(1)
+  streak        Int         @default(0)
+  lastAttemptAt DateTime?
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  
+  createdQuizzes Quiz[]     @relation("QuizCreator")
+  attempts       Attempt[]
+  userBadges     UserBadge[]
+
+  @@index([email])
+  @@index([xp])
+}
+
+model Quiz {
+  id               String      @id @default(uuid())
+  title            String
+  description      String
+  category         String
+  difficulty       String      @default("MEDIUM") // EASY, MEDIUM, HARD
+  timeLimitSeconds Int         @default(600)
+  passingScore     Int         @default(70)       // Percentage (0-100)
+  thumbnail        String?
+  status           String      @default("DRAFT")  // DRAFT, PUBLISHED, ARCHIVED
+  createdById      String
+  createdBy        User        @relation("QuizCreator", fields: [createdById], references: [id], onDelete: Cascade)
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+
+  questions Question[]
+  attempts  Attempt[]
+
+  @@index([status])
+  @@index([category])
+  @@index([createdById])
+}
+
+model Question {
+  id          String   @id @default(uuid())
+  quizId      String
+  quiz        Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  type        String   @default("SINGLE_CHOICE") // SINGLE_CHOICE, MULTI_CHOICE, TRUE_FALSE
+  text        String
+  points      Int      @default(10)
+  explanation String?
+  order       Int      @default(0)
+
+  options        Option[]
+  attemptAnswers AttemptAnswer[]
+
+  @@index([quizId])
+}
+
+model Option {
+  id         String   @id @default(uuid())
+  questionId String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  text       String
+  isCorrect  Boolean  @default(false)
+
+  @@index([questionId])
+}
+
+model Attempt {
+  id          String          @id @default(uuid())
+  quizId      String
+  quiz        Quiz            @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  userId      String
+  user        User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startedAt   DateTime        @default(now())
+  submittedAt DateTime?
+  score       Int             @default(0)
+  totalPoints Int             @default(0)
+  percentage  Float           @default(0.0)
+  passed      Boolean         @default(false)
+  xpEarned    Int             @default(0)
+  status      String          @default("IN_PROGRESS") // IN_PROGRESS, COMPLETED, ABANDONED
+  
+  answers AttemptAnswer[]
+
+  @@index([quizId])
+  @@index([userId])
+  @@index([status])
+}
+
+model AttemptAnswer {
+  id                String   @id @default(uuid())
+  attemptId         String
+  attempt           Attempt  @relation(fields: [attemptId], references: [id], onDelete: Cascade)
+  questionId        String
+  question          Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedOptionIds String   // JSON array string of option IDs e.g. ["opt1", "opt2"]
+  isCorrect         Boolean  @default(false)
+  pointsAwarded     Int      @default(0)
+
+  @@unique([attemptId, questionId])
+  @@index([attemptId])
+}
+
+model Badge {
+  id          String      @id @default(uuid())
+  name        String      @unique
+  description String
+  icon        String
+  criteria    String      // JSON string e.g. {"type": "FIRST_QUIZ"}
+  createdAt   DateTime    @default(now())
+
+  userBadges UserBadge[]
+}
+
+model UserBadge {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  badgeId   String
+  badge     Badge    @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+  earnedAt  DateTime @default(now())
+
+  @@unique([userId, badgeId])
+  @@index([userId])
+}

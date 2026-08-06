@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100 font-body transition-colors duration-300;
+  }
+
+  .light body {
+    @apply bg-slate-50 text-slate-900;
+  }
+}
+
+/* Chunky Tactile Game Buttons */
+.btn-game {
+  @apply relative inline-flex items-center justify-center font-display font-bold rounded-2xl transition-[background-color,border-color,box-shadow,transform] duration-150 active:translate-y-1 active:shadow-none select-none cursor-pointer;
+}
+
+.btn-game-purple {
+  @apply bg-purple-600 hover:bg-purple-500 text-white shadow-game-purple active:shadow-none;
+}
+
+.btn-game-teal {
+  @apply bg-teal-500 hover:bg-teal-400 text-slate-950 shadow-game-teal active:shadow-none;
+}
+
+.btn-game-amber {
+  @apply bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-game-amber active:shadow-none;
+}
+
+.btn-game-coral {
+  @apply bg-rose-600 hover:bg-rose-500 text-white shadow-game-coral active:shadow-none;
+}
+
+.btn-game-emerald {
+  @apply bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-game-emerald active:shadow-none;
+}
+
+.btn-game-gray {
+  @apply bg-slate-700 hover:bg-slate-600 text-white shadow-game-gray active:shadow-none;
+}
+
+/* Glassmorphism Cards */
+.game-card {
+  @apply bg-slate-900/80 border border-slate-800/80 backdrop-blur-md rounded-3xl p-6 transition-[background-color,border-color,box-shadow,transform] duration-200;
+}
+
+.light .game-card {
+  @apply bg-white/90 border-slate-200/90 shadow-xl shadow-slate-200/50 text-slate-900;
+}
+
+/* Smooth Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Accessibility: Prefers Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
