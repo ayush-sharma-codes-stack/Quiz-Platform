@@ -18,7 +18,12 @@ const app = express();
 
 app.use(
   cors({
-    origin: [env.CLIENT_URL, 'http://localhost:5173', 'http://127.0.0.1:5173'],
+    origin: [
+      env.CLIENT_URL,
+      'https://quiz-platform-nine-mu.vercel.app',
+      'http://localhost:5173',
+      'http://127.0.0.1:5173',
+    ],
     credentials: true,
   })
 );
