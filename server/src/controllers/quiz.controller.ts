@@ -1,7 +1,9 @@
 import { Request, Response } from 'express';
 import { prisma } from '../utils/prisma';
+import { ensureDatabaseSeeded } from '../utils/seedHelper';
 
 export async function getPublishedQuizzes(req: Request, res: Response) {
+  await ensureDatabaseSeeded();
   const { category, difficulty, search } = req.query;
 
   const where: any = {
@@ -100,3 +102,12 @@ export async function getPublicQuizDetail(req: Request, res: Response) {
     bestAttempt,
   });
 }
+
+export async function seedDatabaseHandler(req: Request, res: Response) {
+  await ensureDatabaseSeeded();
+  return res.status(200).json({
+    success: true,
+    message: 'Database checked and seeded successfully!',
+  });
+}
+

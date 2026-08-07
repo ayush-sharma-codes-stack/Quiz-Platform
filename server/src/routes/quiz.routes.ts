@@ -1,12 +1,13 @@
 import { Router } from 'express';
 import { asyncHandler } from '../middleware/errorHandler';
-import { getPublishedQuizzes, getPublicQuizDetail } from '../controllers/quiz.controller';
+import { getPublishedQuizzes, getPublicQuizDetail, seedDatabaseHandler } from '../controllers/quiz.controller';
 import { requireAuth } from '../middleware/auth';
 
 const router = Router();
 
 // Optional auth context if user is logged in
 router.get('/', asyncHandler(getPublishedQuizzes));
+router.post('/seed', asyncHandler(seedDatabaseHandler));
 
 // Express route for getting detailed quiz preview (with question list)
 router.get('/:id', (req, res, next) => {
