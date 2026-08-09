@@ -535,6 +535,95 @@ async function main() {
     });
   }
 
+  // 8. Create Marvel Entertainment Quiz (15 Questions)
+  const marvelQuiz = await prisma.quiz.create({
+    data: {
+      title: 'Marvel Cinematic & Comics Universe Trivia',
+      description: 'Test your ultimate fandom knowledge on Marvel superheroes, Avengers, Infinity Stones, Wakanda, and epic cinematic moments!',
+      category: 'Entertainment',
+      difficulty: 'MEDIUM',
+      timeLimitSeconds: 600,
+      passingScore: 70,
+      status: 'PUBLISHED',
+      thumbnail: 'https://images.unsplash.com/photo-1607604276583-eef5d076aa5f?w=600&auto=format&fit=crop&q=80',
+      createdById: admin.id,
+    },
+  });
+
+  const marvelQuestions = [
+    { type: 'SINGLE_CHOICE', text: 'What fictional indestructible metal is fused to Wolverine\'s skeleton?', points: 10, explanation: 'Wolverine\'s skeleton is coated with Adamantium.', order: 1, options: [{ text: 'Vibranium', isCorrect: false }, { text: 'Adamantium', isCorrect: true }, { text: 'Uru', isCorrect: false }, { text: 'Kryptonite', isCorrect: false }] },
+    { type: 'SINGLE_CHOICE', text: 'What is the name of Thor\'s enchanted hammer?', points: 10, explanation: 'Thor\'s primary weapon is Mjolnir.', order: 2, options: [{ text: 'Stormbreaker', isCorrect: false }, { text: 'Mjolnir', isCorrect: true }, { text: 'Gungnir', isCorrect: false }, { text: 'Hofund', isCorrect: false }] },
+    { type: 'SINGLE_CHOICE', text: 'Which Infinity Stone is housed inside the Tesseract cube?', points: 10, explanation: 'The Tesseract contains the Space Stone.', order: 3, options: [{ text: 'Mind Stone', isCorrect: false }, { text: 'Power Stone', isCorrect: false }, { text: 'Space Stone', isCorrect: true }, { text: 'Reality Stone', isCorrect: false }] },
+    { type: 'SINGLE_CHOICE', text: 'What is the real birth name of Black Panther, King of Wakanda?', points: 10, explanation: 'T\'Challa is the King of Wakanda.', order: 4, options: [{ text: 'M\'Baku', isCorrect: false }, { text: 'N\'Jadaka', isCorrect: false }, { text: 'T\'Challa', isCorrect: true }, { text: 'W\'Kabi', isCorrect: false }] },
+    { type: 'TRUE_FALSE', text: 'Tony Stark constructed his very first Mark I Iron Man suit while held captive in a cave.', points: 10, explanation: 'True! Built with Yinsen in a cave.', order: 5, options: [{ text: 'True', isCorrect: true }, { text: 'False', isCorrect: false }] },
+    { type: 'SINGLE_CHOICE', text: 'What metal is Captain America\'s shield primarily made of?', points: 10, explanation: 'Captain America\'s shield is made of Vibranium.', order: 6, options: [{ text: 'Titanium', isCorrect: false }, { text: 'Vibranium', isCorrect: true }, { text: 'Adamantium', isCorrect: false }, { text: 'Carbon Fiber', isCorrect: false }] },
+    { type: 'MULTI_CHOICE', text: 'Which of the following characters were founding members of the original 2012 Avengers film team? (Select all that apply)', points: 15, explanation: 'Iron Man, Cap, Thor, Hulk, Black Widow, Hawkeye.', order: 7, options: [{ text: 'Iron Man', isCorrect: true }, { text: 'Spider-Man', isCorrect: false }, { text: 'Black Widow', isCorrect: true }, { text: 'Captain America', isCorrect: true }] },
+    { type: 'SINGLE_CHOICE', text: 'What is the isolated African nation hidden under a force field in Marvel lore?', points: 10, explanation: 'Wakanda is a futuristic African nation.', order: 8, options: [{ text: 'Genosha', isCorrect: false }, { text: 'Latveria', isCorrect: false }, { text: 'Wakanda', isCorrect: true }, { text: 'Madripoor', isCorrect: false }] },
+    { type: 'SINGLE_CHOICE', text: 'Which Infinity Stone is embedded in Doctor Strange\'s Eye of Agamotto?', points: 10, explanation: 'Eye of Agamotto holds the Time Stone.', order: 9, options: [{ text: 'Time Stone', isCorrect: true }, { text: 'Soul Stone', isCorrect: false }, { text: 'Mind Stone', isCorrect: false }, { text: 'Reality Stone', isCorrect: false }] },
+    { type: 'TRUE_FALSE', text: 'Thanos originates from the planet Titan.', points: 10, explanation: 'True. Thanos is from Titan.', order: 10, options: [{ text: 'True', isCorrect: true }, { text: 'False', isCorrect: false }] },
+    { type: 'SINGLE_CHOICE', text: 'What tree-like alien species is Groot from Guardians of the Galaxy?', points: 10, explanation: 'Groot is a Flora Colossus.', order: 11, options: [{ text: 'Kree', isCorrect: false }, { text: 'Flora Colossus', isCorrect: true }, { text: 'Skrull', isCorrect: false }, { text: 'Centaurian', isCorrect: false }] },
+    { type: 'SINGLE_CHOICE', text: 'Who directed MCU blockbusters "Avengers: Infinity War" and "Avengers: Endgame"?', points: 10, explanation: 'The Russo Brothers directed both films.', order: 12, options: [{ text: 'Joss Whedon', isCorrect: false }, { text: 'James Gunn', isCorrect: false }, { text: 'The Russo Brothers', isCorrect: true }, { text: 'Taika Waititi', isCorrect: false }] },
+    { type: 'MULTI_CHOICE', text: 'Which of the following are among the 6 cosmic Infinity Stones? (Select all that apply)', points: 15, explanation: 'Space, Mind, Reality, Power, Time, Soul.', order: 13, options: [{ text: 'Power Stone', isCorrect: true }, { text: 'Shadow Stone', isCorrect: false }, { text: 'Reality Stone', isCorrect: true }, { text: 'Soul Stone', isCorrect: true }] },
+    { type: 'SINGLE_CHOICE', text: 'What is Peter Parker\'s high school best friend named in the MCU trilogy?', points: 10, explanation: 'Ned Leeds is Peter\'s best friend.', order: 14, options: [{ text: 'Harry Osborn', isCorrect: false }, { text: 'Flash Thompson', isCorrect: false }, { text: 'Ned Leeds', isCorrect: true }, { text: 'Miles Morales', isCorrect: false }] },
+    { type: 'TRUE_FALSE', text: 'Wanda Maximoff (Scarlet Witch) and Pietro Maximoff (Quicksilver) are twin siblings.', points: 10, explanation: 'True! Wanda and Pietro are twins.', order: 15, options: [{ text: 'True', isCorrect: true }, { text: 'False', isCorrect: false }] },
+  ];
+
+  for (const q of marvelQuestions) {
+    await prisma.question.create({
+      data: {
+        quizId: marvelQuiz.id,
+        type: q.type,
+        text: q.text,
+        points: q.points,
+        explanation: q.explanation,
+        order: q.order,
+        options: { create: q.options },
+      },
+    });
+  }
+
+  // 9. Create General Knowledge (GK) Quiz (10 Questions)
+  const gkQuiz = await prisma.quiz.create({
+    data: {
+      title: 'Global General Knowledge & World Trivia',
+      description: 'Test your world awareness, geography, history, and general facts across continents and cultures!',
+      category: 'General Knowledge',
+      difficulty: 'EASY',
+      timeLimitSeconds: 480,
+      passingScore: 70,
+      status: 'PUBLISHED',
+      thumbnail: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=600&auto=format&fit=crop&q=80',
+      createdById: admin.id,
+    },
+  });
+
+  const gkQuestions = [
+    { type: 'SINGLE_CHOICE', text: 'What is the capital city of Japan?', points: 10, explanation: 'Tokyo is Japan\'s capital.', order: 1, options: [{ text: 'Kyoto', isCorrect: false }, { text: 'Osaka', isCorrect: false }, { text: 'Tokyo', isCorrect: true }, { text: 'Hiroshima', isCorrect: false }] },
+    { type: 'SINGLE_CHOICE', text: 'Which is the largest ocean by surface area on Earth?', points: 10, explanation: 'The Pacific Ocean is the largest.', order: 2, options: [{ text: 'Atlantic Ocean', isCorrect: false }, { text: 'Indian Ocean', isCorrect: false }, { text: 'Pacific Ocean', isCorrect: true }, { text: 'Arctic Ocean', isCorrect: false }] },
+    { type: 'TRUE_FALSE', text: 'The Great Wall of China is easily visible from low Earth orbit with the naked eye.', points: 10, explanation: 'False. Astronauts confirm it is not visible without lenses.', order: 3, options: [{ text: 'True', isCorrect: false }, { text: 'False', isCorrect: true }] },
+    { type: 'SINGLE_CHOICE', text: 'What is the chemical symbol for Gold on the Periodic Table?', points: 10, explanation: 'Au (Aurum) is the symbol for Gold.', order: 4, options: [{ text: 'Ag', isCorrect: false }, { text: 'Au', isCorrect: true }, { text: 'Gd', isCorrect: false }, { text: 'Fe', isCorrect: false }] },
+    { type: 'SINGLE_CHOICE', text: 'Which continent is home to the vast Sahara Desert?', points: 10, explanation: 'The Sahara is in northern Africa.', order: 5, options: [{ text: 'Asia', isCorrect: false }, { text: 'Australia', isCorrect: false }, { text: 'Africa', isCorrect: true }, { text: 'South America', isCorrect: false }] },
+    { type: 'SINGLE_CHOICE', text: 'Who painted the famous Renaissance masterpiece "Mona Lisa"?', points: 10, explanation: 'Leonardo da Vinci painted Mona Lisa.', order: 6, options: [{ text: 'Vincent van Gogh', isCorrect: false }, { text: 'Pablo Picasso', isCorrect: false }, { text: 'Leonardo da Vinci', isCorrect: true }, { text: 'Michelangelo', isCorrect: false }] },
+    { type: 'MULTI_CHOICE', text: 'Which of the following nations are official member countries of the G7? (Select all that apply)', points: 15, explanation: 'Canada, France, Germany, Italy, Japan, UK, USA.', order: 7, options: [{ text: 'Japan', isCorrect: true }, { text: 'Germany', isCorrect: true }, { text: 'Brazil', isCorrect: false }, { text: 'Canada', isCorrect: true }] },
+    { type: 'SINGLE_CHOICE', text: 'What is the hardest naturally occurring substance found on Earth?', points: 10, explanation: 'Diamond is pure crystalline carbon.', order: 8, options: [{ text: 'Titanium', isCorrect: false }, { text: 'Quartz', isCorrect: false }, { text: 'Diamond', isCorrect: true }, { text: 'Granite', isCorrect: false }] },
+    { type: 'TRUE_FALSE', text: 'Light travels significantly faster than sound in air.', points: 10, explanation: 'True! Light is 300,000 km/s vs Sound 343 m/s.', order: 9, options: [{ text: 'True', isCorrect: true }, { text: 'False', isCorrect: false }] },
+    { type: 'SINGLE_CHOICE', text: 'Which planet in our Solar System has the highest number of confirmed moons (146)?', points: 10, explanation: 'Saturn has 146 confirmed moons.', order: 10, options: [{ text: 'Jupiter', isCorrect: false }, { text: 'Saturn', isCorrect: true }, { text: 'Uranus', isCorrect: false }, { text: 'Neptune', isCorrect: false }] },
+  ];
+
+  for (const q of gkQuestions) {
+    await prisma.question.create({
+      data: {
+        quizId: gkQuiz.id,
+        type: q.type,
+        text: q.text,
+        points: q.points,
+        explanation: q.explanation,
+        order: q.order,
+        options: { create: q.options },
+      },
+    });
+  }
+
   // Seed sample completed attempt for Student on Science Quiz
   const sampleAttempt = await prisma.attempt.create({
     data: {
