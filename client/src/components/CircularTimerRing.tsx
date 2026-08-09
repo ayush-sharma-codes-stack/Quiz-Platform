@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Clock } from 'lucide-react';
+import { Clock, Zap } from 'lucide-react';
 import { soundFx } from '../utils/sound';
 
 interface CircularTimerRingProps {
@@ -24,15 +24,18 @@ export const CircularTimerRing: React.FC<CircularTimerRingProps> = ({
   }, [timeLeftSeconds, isDanger10]);
 
   // SVG parameters
-  const radius = 36;
+  const radius = 38;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (percentage / 100) * circumference;
 
   let strokeColor = '#10B981'; // Green
+  let glowClass = 'shadow-game-glow-teal';
   if (percentage <= 50 && percentage > 20) {
     strokeColor = '#F59E0B'; // Amber
+    glowClass = 'shadow-game-glow-amber';
   } else if (percentage <= 20) {
     strokeColor = '#EF4444'; // Red
+    glowClass = 'shadow-game-glow-coral';
   }
 
   const minutes = Math.floor(timeLeftSeconds / 60);
@@ -41,19 +44,28 @@ export const CircularTimerRing: React.FC<CircularTimerRingProps> = ({
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center p-2 rounded-full transition-all duration-300 ${
+      className={`relative inline-flex items-center justify-center p-3 rounded-full transition-all duration-300 backdrop-blur-2xl border-4 ${
         isDanger10
-          ? 'animate-pulse-fast bg-rose-950/60 ring-4 ring-rose-500/50 shadow-lg shadow-rose-500/30'
+          ? 'animate-pulse-fast bg-rose-950/80 border-rose-500 shadow-game-glow-coral ring-4 ring-rose-500/50'
           : isWarning30
-          ? 'animate-pulse bg-amber-950/40 ring-2 ring-amber-500/40 shadow-md shadow-amber-500/20'
-          : 'bg-slate-900/80 ring-1 ring-slate-800'
+          ? 'animate-pulse bg-amber-950/60 border-amber-500 shadow-game-glow-amber'
+          : `bg-slate-900/90 border-slate-700/80 ${glowClass}`
       }`}
     >
-      <svg className="w-24 h-24 transform -rotate-90">
-        {/* Background track */}
+      <svg className="w-28 h-28 transform -rotate-90">
+        {/* Outer Bevel Track */}
         <circle
-          cx="48"
-          cy="48"
+          cx="56"
+          cy="56"
+          r={radius}
+          className="stroke-slate-950"
+          strokeWidth="10"
+          fill="transparent"
+        />
+        {/* Track */}
+        <circle
+          cx="56"
+          cy="56"
           r={radius}
           className="stroke-slate-800"
           strokeWidth="8"
@@ -61,8 +73,8 @@ export const CircularTimerRing: React.FC<CircularTimerRingProps> = ({
         />
         {/* Progress Ring */}
         <motion.circle
-          cx="48"
-          cy="48"
+          cx="56"
+          cy="56"
           r={radius}
           stroke={strokeColor}
           strokeWidth="8"
@@ -76,10 +88,14 @@ export const CircularTimerRing: React.FC<CircularTimerRingProps> = ({
       </svg>
 
       <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <Clock className={`w-4 h-4 mb-0.5 ${isDanger10 ? 'text-rose-400 animate-bounce' : 'text-slate-400'}`} />
+        {isDanger10 ? (
+          <Zap className="w-5 h-5 text-rose-400 animate-bounce mb-0.5" />
+        ) : (
+          <Clock className={`w-4 h-4 mb-0.5 ${isWarning30 ? 'text-amber-400' : 'text-slate-400'}`} />
+        )}
         <span
-          className={`font-display font-bold text-sm tracking-wider ${
-            isDanger10 ? 'text-rose-400 scale-110' : isWarning30 ? 'text-amber-400' : 'text-slate-100'
+          className={`font-display font-black text-base tracking-wider drop-shadow-md ${
+            isDanger10 ? 'text-rose-400 scale-110' : isWarning30 ? 'text-amber-400' : 'text-white'
           }`}
         >
           {formattedTime}

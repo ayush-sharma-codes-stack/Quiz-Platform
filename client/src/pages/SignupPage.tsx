@@ -45,24 +45,29 @@ export const SignupPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
+    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12 relative">
+      {/* Decorative background glow orbs */}
+      <div className="absolute top-20 right-1/4 w-64 h-64 bg-teal-500/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-20 left-1/4 w-48 h-48 bg-purple-600/15 rounded-full blur-2xl pointer-events-none" />
+
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative"
+        initial={{ opacity: 0, y: 24, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-md game-card border-2 border-slate-700/80 p-8 shadow-game-teal relative z-10"
       >
         <div className="flex flex-col items-center text-center mb-6">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-teal-400 to-purple-600 p-0.5 shadow-xl shadow-teal-500/20 mb-4">
-            <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
-              <Gamepad2 className="w-8 h-8 text-purple-400" />
+          <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-teal-400 to-purple-600 p-1.5 shadow-game-teal mb-5">
+            <div className="w-full h-full bg-slate-950 rounded-[20px] flex items-center justify-center">
+              <Gamepad2 className="w-9 h-9 text-purple-400" />
             </div>
           </div>
-          <h2 className="font-display font-extrabold text-3xl text-white">Create Player Profile</h2>
-          <p className="text-sm text-slate-400 mt-1">Join the gamified assessment arena</p>
+          <h2 className="font-display font-black text-3xl text-white tracking-tight">Create Player Profile</h2>
+          <p className="text-sm font-semibold text-slate-300 mt-1">Join the gamified assessment arena</p>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 rounded-2xl bg-rose-950/60 border border-rose-800 text-rose-300 text-xs flex items-center gap-2">
+          <div className="mb-6 p-4 rounded-2xl bg-rose-950/80 border-2 border-rose-700/60 text-rose-300 text-xs font-bold flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
@@ -70,69 +75,67 @@ export const SignupPage: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 font-display">
+            <label className="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2 font-display">
               Full Name
             </label>
             <div className="relative">
-              <User className="w-5 h-5 text-slate-500 absolute left-4 top-1/2 transform -translate-y-1/2" />
+              <User className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 transform -translate-y-1/2" />
               <input
                 type="text"
                 required
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Alex Player"
-                className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500 transition-colors"
+                className="w-full bg-slate-950/90 border-2 border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 transition-colors"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 font-display">
+            <label className="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2 font-display">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="w-5 h-5 text-slate-500 absolute left-4 top-1/2 transform -translate-y-1/2" />
+              <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 transform -translate-y-1/2" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="player@example.com"
-                className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500 transition-colors"
+                className="w-full bg-slate-950/90 border-2 border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 transition-colors"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 font-display">
+            <label className="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2 font-display">
               Password (≥8 chars, 1 number, 1 special char)
             </label>
             <div className="relative">
-              <Lock className="w-5 h-5 text-slate-500 absolute left-4 top-1/2 transform -translate-y-1/2" />
+              <Lock className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 transform -translate-y-1/2" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-teal-500 transition-colors"
+                className="w-full bg-slate-950/90 border-2 border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 transition-colors"
               />
             </div>
           </div>
 
           {/* Role selector */}
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 font-display">
+            <label className="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2 font-display">
               Select Role
             </label>
             <div className="grid grid-cols-2 gap-3">
               <button
                 type="button"
                 onClick={() => setRole('STUDENT')}
-                className={`py-3 px-4 rounded-2xl border text-xs font-display font-bold flex items-center justify-center gap-2 transition-all ${
-                  role === 'STUDENT'
-                    ? 'bg-purple-900/50 border-purple-500 text-purple-200 shadow-md'
-                    : 'bg-slate-950 border-slate-800 text-slate-400'
+                className={`btn-game py-3 px-4 text-xs flex items-center justify-center gap-2 ${
+                  role === 'STUDENT' ? 'btn-game-purple' : 'btn-game-gray opacity-70'
                 }`}
               >
                 <User className="w-4 h-4" /> Student
@@ -141,10 +144,8 @@ export const SignupPage: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setRole('ADMIN')}
-                className={`py-3 px-4 rounded-2xl border text-xs font-display font-bold flex items-center justify-center gap-2 transition-all ${
-                  role === 'ADMIN'
-                    ? 'bg-teal-900/50 border-teal-500 text-teal-200 shadow-md'
-                    : 'bg-slate-950 border-slate-800 text-slate-400'
+                className={`btn-game py-3 px-4 text-xs flex items-center justify-center gap-2 ${
+                  role === 'ADMIN' ? 'btn-game-teal' : 'btn-game-gray opacity-70'
                 }`}
               >
                 <Shield className="w-4 h-4" /> Admin
@@ -161,9 +162,9 @@ export const SignupPage: React.FC = () => {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-xs text-slate-400">
+        <div className="mt-6 text-center text-xs text-slate-400 font-semibold">
           Already registered?{' '}
-          <Link to="/login" className="font-bold text-teal-400 hover:underline">
+          <Link to="/login" className="font-black text-teal-400 hover:underline">
             Log in here
           </Link>
         </div>

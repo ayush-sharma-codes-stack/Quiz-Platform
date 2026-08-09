@@ -40,24 +40,29 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12">
+    <div className="min-h-[85vh] flex items-center justify-center px-4 py-12 relative">
+      {/* Decorative background glow orbs */}
+      <div className="absolute top-20 left-1/4 w-64 h-64 bg-purple-600/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-20 right-1/4 w-48 h-48 bg-teal-500/15 rounded-full blur-2xl pointer-events-none" />
+
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl p-8 shadow-2xl relative"
+        initial={{ opacity: 0, y: 24, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.4 }}
+        className="w-full max-w-md game-card border-2 border-slate-700/80 p-8 shadow-game-purple relative z-10"
       >
         <div className="flex flex-col items-center text-center mb-8">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-purple-600 to-teal-400 p-0.5 shadow-xl shadow-purple-500/20 mb-4">
-            <div className="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center">
-              <Gamepad2 className="w-8 h-8 text-teal-400" />
+          <div className="w-20 h-20 rounded-3xl bg-gradient-to-tr from-purple-600 to-teal-400 p-1.5 shadow-game-purple mb-5">
+            <div className="w-full h-full bg-slate-950 rounded-[20px] flex items-center justify-center">
+              <Gamepad2 className="w-9 h-9 text-teal-400" />
             </div>
           </div>
-          <h2 className="font-display font-extrabold text-3xl text-white">Welcome Back!</h2>
-          <p className="text-sm text-slate-400 mt-1">Log in to continue your quiz quest</p>
+          <h2 className="font-display font-black text-3xl text-white tracking-tight">Welcome Back!</h2>
+          <p className="text-sm font-semibold text-slate-300 mt-1">Log in to continue your quiz quest</p>
         </div>
 
         {error && (
-          <div className="mb-6 p-4 rounded-2xl bg-rose-950/60 border border-rose-800 text-rose-300 text-xs flex items-center gap-2">
+          <div className="mb-6 p-4 rounded-2xl bg-rose-950/80 border-2 border-rose-700/60 text-rose-300 text-xs font-bold flex items-center gap-2">
             <AlertCircle className="w-4 h-4 shrink-0" />
             <span>{error}</span>
           </div>
@@ -65,40 +70,40 @@ export const LoginPage: React.FC = () => {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2 font-display">
+            <label className="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2 font-display">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="w-5 h-5 text-slate-500 absolute left-4 top-1/2 transform -translate-y-1/2" />
+              <Mail className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 transform -translate-y-1/2" />
               <input
                 type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="player@example.com"
-                className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+                className="w-full bg-slate-950/90 border-2 border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
               />
             </div>
           </div>
 
           <div>
             <div className="flex justify-between items-center mb-2">
-              <label className="block text-xs font-bold uppercase tracking-wider text-slate-300 font-display">
+              <label className="block text-xs font-black uppercase tracking-wider text-slate-300 font-display">
                 Password
               </label>
-              <Link to="/forgot-password" className="text-xs font-semibold text-purple-400 hover:underline">
+              <Link to="/forgot-password" className="text-xs font-black text-purple-400 hover:underline">
                 Forgot password?
               </Link>
             </div>
             <div className="relative">
-              <Lock className="w-5 h-5 text-slate-500 absolute left-4 top-1/2 transform -translate-y-1/2" />
+              <Lock className="w-5 h-5 text-slate-400 absolute left-4 top-1/2 transform -translate-y-1/2" />
               <input
                 type="password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full bg-slate-950 border border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm text-slate-100 placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
+                className="w-full bg-slate-950/90 border-2 border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-white placeholder-slate-500 focus:outline-none focus:border-purple-500 transition-colors"
               />
             </div>
           </div>
@@ -112,30 +117,30 @@ export const LoginPage: React.FC = () => {
           </button>
         </form>
 
-        <div className="mt-8 text-center text-xs text-slate-400">
+        <div className="mt-8 text-center text-xs text-slate-400 font-semibold">
           Don't have an account?{' '}
-          <Link to="/signup" className="font-bold text-purple-400 hover:underline">
+          <Link to="/signup" className="font-black text-purple-400 hover:underline">
             Sign up now
           </Link>
         </div>
 
         {/* Demo Credentials Quick-Fill */}
-        <div className="mt-6 pt-6 border-t border-slate-800/80">
-          <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500 text-center mb-2">
-            Quick Demo Logins
+        <div className="mt-6 pt-6 border-t-2 border-slate-800/80">
+          <p className="text-[11px] font-black uppercase tracking-wider text-slate-400 text-center mb-3">
+            ⚡ Quick Demo Logins
           </p>
           <div className="flex gap-2">
             <button
               type="button"
               onClick={() => { setEmail('student@quizplatform.com'); setPassword('Student123!'); }}
-              className="flex-1 py-2 px-3 rounded-xl bg-slate-800/60 hover:bg-slate-800 text-[11px] font-bold text-slate-300 border border-slate-700/50"
+              className="flex-1 py-2.5 px-3 rounded-xl bg-purple-950/50 hover:bg-purple-950 text-[11px] font-black text-purple-300 border-2 border-purple-800/50 transition-colors"
             >
               Demo Student
             </button>
             <button
               type="button"
               onClick={() => { setEmail('admin@quizplatform.com'); setPassword('Admin123!'); }}
-              className="flex-1 py-2 px-3 rounded-xl bg-slate-800/60 hover:bg-slate-800 text-[11px] font-bold text-slate-300 border border-slate-700/50"
+              className="flex-1 py-2.5 px-3 rounded-xl bg-teal-950/50 hover:bg-teal-950 text-[11px] font-black text-teal-300 border-2 border-teal-800/50 transition-colors"
             >
               Demo Admin
             </button>

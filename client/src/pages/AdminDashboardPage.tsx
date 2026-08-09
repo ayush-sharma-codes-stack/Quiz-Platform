@@ -2,15 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
-  LayoutDashboard,
   BookOpen,
   Users,
-  BarChart3,
   Plus,
   CheckCircle2,
   TrendingUp,
   Target,
   Sparkles,
+  Shield,
 } from 'lucide-react';
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts';
 import { apiRequest } from '../services/api';
@@ -40,17 +39,17 @@ export const AdminDashboardPage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center gap-3">
-        <div className="w-10 h-10 border-4 border-teal-400 border-t-transparent rounded-full animate-spin" />
-        <p className="font-display font-bold text-sm text-slate-400">Initializing Command Center HUD...</p>
+        <div className="w-12 h-12 border-4 border-teal-400 border-t-transparent rounded-full animate-spin shadow-game-glow-teal" />
+        <p className="font-display font-black text-base text-teal-300 animate-pulse">Initializing Command Center HUD...</p>
       </div>
     );
   }
 
   if (error || !analytics) {
     return (
-      <div className="max-w-md mx-auto my-16 p-6 rounded-3xl bg-slate-900 border border-slate-800 text-center">
-        <p className="text-rose-400 font-bold mb-4">{error || 'Could not load admin analytics.'}</p>
-        <button onClick={fetchOverview} className="btn-game btn-game-purple px-6 py-2.5 text-xs">
+      <div className="max-w-md mx-auto my-16 p-8 rounded-3xl bg-slate-900 border-2 border-slate-800 text-center shadow-game-purple">
+        <p className="text-rose-400 font-black mb-5 text-base">{error || 'Could not load admin analytics.'}</p>
+        <button onClick={fetchOverview} className="btn-game btn-game-purple px-6 py-3 text-sm">
           Retry
         </button>
       </div>
@@ -65,14 +64,15 @@ export const AdminDashboardPage: React.FC = () => {
       {/* Banner */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="px-3 py-0.5 rounded-full bg-teal-950 border border-teal-700 text-teal-300 text-xs font-bold font-display uppercase">
-              Admin HUD
+          <div className="flex items-center gap-2 mb-2">
+            <span className="badge-3d bg-teal-950 border-teal-700 text-teal-300">
+              <Shield className="w-3 h-3 mr-1 inline" /> Admin HUD
             </span>
           </div>
-          <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-white">
+          <h1 className="font-display font-black text-3xl sm:text-4xl text-white tracking-tight">
             Command Center Overview
           </h1>
+          <p className="text-slate-300 font-semibold text-sm mt-1">Platform-wide analytics and quick action controls</p>
         </div>
 
         <div className="flex flex-wrap gap-3">
@@ -94,7 +94,6 @@ export const AdminDashboardPage: React.FC = () => {
           icon={<BookOpen className="w-6 h-6" />}
           color="teal"
         />
-
         <StatsCard
           title="Active Students"
           value={totalStudents}
@@ -102,7 +101,6 @@ export const AdminDashboardPage: React.FC = () => {
           icon={<Users className="w-6 h-6" />}
           color="purple"
         />
-
         <StatsCard
           title="Total Attempts"
           value={totalAttempts}
@@ -110,7 +108,6 @@ export const AdminDashboardPage: React.FC = () => {
           icon={<CheckCircle2 className="w-6 h-6" />}
           color="indigo"
         />
-
         <StatsCard
           title="Average Score"
           value={`${averageScore}%`}
@@ -121,11 +118,10 @@ export const AdminDashboardPage: React.FC = () => {
       </div>
 
       {/* Attempts Over Time Chart */}
-      <div className="game-card p-6 space-y-4">
-        <h2 className="font-display font-extrabold text-xl text-white flex items-center gap-2">
-          <TrendingUp className="w-5 h-5 text-teal-400" /> Platform Assessment Volume (Last 7 Days)
+      <div className="game-card p-6 space-y-4 border-2 border-slate-700/80 shadow-game-teal-sm">
+        <h2 className="font-display font-black text-2xl text-white flex items-center gap-2 tracking-tight">
+          <TrendingUp className="w-6 h-6 text-teal-400" /> Platform Assessment Volume (Last 7 Days)
         </h2>
-
         <div className="h-64 w-full pt-4">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={attemptsOverTime}>
@@ -135,73 +131,54 @@ export const AdminDashboardPage: React.FC = () => {
               <Tooltip
                 contentStyle={{
                   backgroundColor: '#0f172a',
-                  borderColor: '#334155',
+                  borderColor: '#475569',
                   borderRadius: '16px',
                   color: '#f8fafc',
                   fontFamily: 'Fredoka',
+                  fontWeight: 'bold',
+                  boxShadow: '0 10px 25px -5px rgba(0,0,0,0.5)',
                 }}
               />
-              <Line
-                type="monotone"
-                dataKey="attempts"
-                name="Attempts"
-                stroke="#14b8a6"
-                strokeWidth={3}
-                dot={{ fill: '#8b5cf6', r: 5 }}
-              />
-              <Line
-                type="monotone"
-                dataKey="avgScore"
-                name="Avg Score (%)"
-                stroke="#f59e0b"
-                strokeWidth={2}
-                strokeDasharray="5 5"
-              />
+              <Line type="monotone" dataKey="attempts" name="Attempts" stroke="#14b8a6" strokeWidth={4} dot={{ fill: '#8b5cf6', r: 6, strokeWidth: 2, stroke: '#fff' }} />
+              <Line type="monotone" dataKey="avgScore" name="Avg Score (%)" stroke="#f59e0b" strokeWidth={3} strokeDasharray="5 5" />
             </LineChart>
           </ResponsiveContainer>
         </div>
       </div>
 
       {/* Live Recent Attempts Feed */}
-      <div className="game-card p-6 space-y-4">
-        <h2 className="font-display font-extrabold text-xl text-white flex items-center gap-2">
-          <Sparkles className="w-5 h-5 text-purple-400" /> Recent Student Attempts
+      <div className="game-card p-6 space-y-4 border-2 border-slate-800 shadow-game-purple-sm">
+        <h2 className="font-display font-black text-2xl text-white flex items-center gap-2 tracking-tight">
+          <Sparkles className="w-6 h-6 text-purple-400" /> Recent Student Attempts
         </h2>
-
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
             <thead>
-              <tr className="border-b border-slate-800 text-slate-400 uppercase font-display">
-                <th className="py-3 px-4">Student</th>
-                <th className="py-3 px-4">Quiz Title</th>
-                <th className="py-3 px-4">Category</th>
-                <th className="py-3 px-4">Score</th>
-                <th className="py-3 px-4">Status</th>
-                <th className="py-3 px-4 text-right">Submitted At</th>
+              <tr className="border-b-2 border-slate-800 text-slate-300 uppercase font-display tracking-wider">
+                <th className="py-3.5 px-4">Student</th>
+                <th className="py-3.5 px-4">Quiz Title</th>
+                <th className="py-3.5 px-4">Category</th>
+                <th className="py-3.5 px-4">Score</th>
+                <th className="py-3.5 px-4">Status</th>
+                <th className="py-3.5 px-4 text-right">Submitted At</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-800/60 font-medium text-slate-200">
+            <tbody className="divide-y divide-slate-800/80 font-bold text-slate-200">
               {recentAttempts?.map((att: any) => (
-                <tr key={att.id} className="hover:bg-slate-900/60">
-                  <td className="py-3.5 px-4 font-bold font-display text-sm text-slate-100">
-                    {att.user?.name}
-                    <div className="text-[10px] text-slate-400 font-normal">{att.user?.email}</div>
+                <tr key={att.id} className="hover:bg-slate-900/80 transition-colors">
+                  <td className="py-4 px-4">
+                    <span className="font-black font-display text-sm text-white">{att.user?.name}</span>
+                    <div className="text-[10px] text-slate-400 font-semibold">{att.user?.email}</div>
                   </td>
-                  <td className="py-3.5 px-4 font-bold">{att.quiz?.title}</td>
-                  <td className="py-3.5 px-4">{att.quiz?.category}</td>
-                  <td className="py-3.5 px-4 font-bold text-amber-400">{att.percentage}%</td>
-                  <td className="py-3.5 px-4">
-                    <span
-                      className={`px-2.5 py-0.5 rounded-full text-[10px] font-bold uppercase ${
-                        att.passed
-                          ? 'bg-emerald-950 text-emerald-300 border border-emerald-800'
-                          : 'bg-amber-950 text-amber-300 border border-amber-800'
-                      }`}
-                    >
+                  <td className="py-4 px-4 font-bold">{att.quiz?.title}</td>
+                  <td className="py-4 px-4 text-slate-400">{att.quiz?.category}</td>
+                  <td className="py-4 px-4 font-black text-amber-400 text-base">{att.percentage}%</td>
+                  <td className="py-4 px-4">
+                    <span className={`badge-3d ${att.passed ? 'bg-emerald-950 text-emerald-300 border-emerald-600' : 'bg-rose-950 text-rose-300 border-rose-600'}`}>
                       {att.passed ? 'PASSED' : 'FAILED'}
                     </span>
                   </td>
-                  <td className="py-3.5 px-4 text-right text-slate-400">
+                  <td className="py-4 px-4 text-right text-slate-400">
                     {att.submittedAt ? new Date(att.submittedAt).toLocaleTimeString() : '-'}
                   </td>
                 </tr>

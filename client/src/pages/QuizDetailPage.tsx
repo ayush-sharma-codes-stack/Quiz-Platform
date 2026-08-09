@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Clock, Target, HelpCircle, Trophy, Play, ArrowLeft, ShieldAlert } from 'lucide-react';
+import { Clock, Target, HelpCircle, Trophy, Play, ArrowLeft, ShieldAlert, Sparkles, Zap, Award } from 'lucide-react';
 import { apiRequest } from '../services/api';
 import { Quiz } from '../types';
 import { useQuizAttemptStore } from '../store/quizAttemptStore';
@@ -57,19 +57,19 @@ export const QuizDetailPage: React.FC = () => {
   if (isLoading) {
     return (
       <div className="min-h-[70vh] flex flex-col items-center justify-center gap-3">
-        <div className="w-10 h-10 border-4 border-purple-500 border-t-transparent rounded-full animate-spin" />
-        <p className="font-display font-bold text-sm text-slate-400">Preparing assessment arena...</p>
+        <div className="w-14 h-14 border-4 border-purple-500 border-t-transparent rounded-full animate-spin shadow-game-glow-purple" />
+        <p className="font-display font-black text-base text-purple-300 animate-pulse">Preparing Mission Briefing...</p>
       </div>
     );
   }
 
   if (error || !quiz) {
     return (
-      <div className="max-w-md mx-auto my-16 p-6 rounded-3xl bg-slate-900 border border-slate-800 text-center">
-        <ShieldAlert className="w-12 h-12 text-rose-400 mx-auto mb-3" />
-        <h3 className="font-display font-bold text-lg text-slate-100">Assessment Unavailable</h3>
-        <p className="text-xs text-slate-400 mt-1 mb-4">{error || 'Quiz not found'}</p>
-        <Link to="/quizzes" className="btn-game btn-game-gray px-6 py-2 text-xs">
+      <div className="max-w-md mx-auto my-16 p-8 rounded-3xl bg-slate-900 border-2 border-slate-700 text-center shadow-game-coral">
+        <ShieldAlert className="w-14 h-14 text-rose-400 mx-auto mb-3 animate-bounce-subtle" />
+        <h3 className="font-display font-black text-xl text-white">Mission Unavailable</h3>
+        <p className="text-xs text-slate-400 font-semibold mt-1 mb-5">{error || 'Quiz not found'}</p>
+        <Link to="/quizzes" className="btn-game btn-game-gray px-6 py-3 text-xs">
           Back to Catalog
         </Link>
       </div>
@@ -78,76 +78,84 @@ export const QuizDetailPage: React.FC = () => {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8 space-y-8">
-      <Link to="/quizzes" className="inline-flex items-center gap-2 text-xs font-bold text-slate-400 hover:text-white transition-colors">
+      <Link to="/quizzes" className="btn-game btn-game-gray text-xs px-4 py-2 inline-flex items-center gap-2">
         <ArrowLeft className="w-4 h-4" /> Back to Quizzes
       </Link>
 
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="game-card p-8 border-slate-800 space-y-6"
+        initial={{ opacity: 0, scale: 0.98, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        className="game-card p-8 border-2 border-slate-700/80 space-y-6 shadow-game-purple"
       >
         {/* Banner */}
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b border-slate-800">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <span className="px-3 py-1 rounded-full bg-purple-950/80 border border-purple-800 text-xs font-bold text-purple-300 font-display">
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-6 border-b-2 border-slate-800">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="badge-3d bg-purple-950 text-purple-300 border-purple-700">
                 {quiz.category}
               </span>
-              <span className="px-3 py-1 rounded-full bg-slate-800 border border-slate-700 text-xs font-bold text-slate-300 font-display">
+              <span className={`badge-3d ${
+                quiz.difficulty === 'EASY'
+                  ? 'bg-emerald-950 text-emerald-300 border-emerald-700'
+                  : quiz.difficulty === 'MEDIUM'
+                  ? 'bg-amber-950 text-amber-300 border-amber-700'
+                  : 'bg-rose-950 text-rose-300 border-rose-700'
+              }`}>
                 {quiz.difficulty} Difficulty
               </span>
             </div>
 
-            <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-white">
+            <h1 className="font-display font-black text-3xl sm:text-4xl text-white tracking-tight">
               {quiz.title}
             </h1>
           </div>
 
           {bestAttempt && (
-            <div className="bg-amber-950/40 border border-amber-800/60 rounded-2xl p-4 flex items-center gap-3 shrink-0">
-              <Trophy className="w-8 h-8 text-amber-400 fill-amber-400" />
+            <div className="bg-amber-950/60 border-2 border-amber-600 rounded-2xl p-4 flex items-center gap-3 shrink-0 shadow-game-amber-sm">
+              <Trophy className="w-9 h-9 text-amber-400 fill-amber-400 animate-bounce-subtle" />
               <div>
-                <p className="text-[10px] font-bold text-amber-300 uppercase tracking-wider font-display">Your Personal Best</p>
-                <p className="font-display font-extrabold text-xl text-amber-400">{bestAttempt.percentage}%</p>
+                <p className="text-[10px] font-black text-amber-300 uppercase tracking-wider font-display">Personal High Score</p>
+                <p className="font-display font-black text-2xl text-amber-400">{bestAttempt.percentage}%</p>
               </div>
             </div>
           )}
         </div>
 
-        <p className="text-sm text-slate-300 leading-relaxed font-body">
+        <p className="text-sm text-slate-200 font-semibold leading-relaxed font-body">
           {quiz.description}
         </p>
 
         {/* Assessment Specs Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-          <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center">
-            <Clock className="w-6 h-6 text-purple-400 mx-auto mb-1" />
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block font-display">Time Limit</span>
-            <span className="font-display font-bold text-lg text-slate-100">{Math.ceil(quiz.timeLimitSeconds / 60)} Minutes</span>
+          <div className="p-5 rounded-3xl bg-slate-950/90 border-2 border-slate-800 text-center shadow-inner">
+            <Clock className="w-7 h-7 text-purple-400 mx-auto mb-1.5" />
+            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block font-display">Time Limit</span>
+            <span className="font-display font-black text-xl text-white">{Math.ceil(quiz.timeLimitSeconds / 60)} Minutes</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center">
-            <HelpCircle className="w-6 h-6 text-teal-400 mx-auto mb-1" />
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block font-display">Total Questions</span>
-            <span className="font-display font-bold text-lg text-slate-100">{quiz.questions?.length || 0} Questions</span>
+          <div className="p-5 rounded-3xl bg-slate-950/90 border-2 border-slate-800 text-center shadow-inner">
+            <HelpCircle className="w-7 h-7 text-teal-400 mx-auto mb-1.5" />
+            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block font-display">Total Quests</span>
+            <span className="font-display font-black text-xl text-white">{quiz.questions?.length || 0} Questions</span>
           </div>
 
-          <div className="p-4 rounded-2xl bg-slate-950 border border-slate-800 text-center">
-            <Target className="w-6 h-6 text-amber-400 mx-auto mb-1" />
-            <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 block font-display">Passing Score</span>
-            <span className="font-display font-bold text-lg text-amber-400">{quiz.passingScore}%</span>
+          <div className="p-5 rounded-3xl bg-slate-950/90 border-2 border-slate-800 text-center shadow-inner">
+            <Target className="w-7 h-7 text-amber-400 mx-auto mb-1.5" />
+            <span className="text-[10px] font-black uppercase tracking-wider text-slate-400 block font-display">Target Mastery</span>
+            <span className="font-display font-black text-xl text-amber-400">{quiz.passingScore}%</span>
           </div>
         </div>
 
         {/* Rules */}
-        <div className="p-5 rounded-2xl bg-purple-950/20 border border-purple-900/50 space-y-2 text-xs text-purple-200">
-          <h4 className="font-display font-bold text-sm text-purple-300">Assessment Rules:</h4>
-          <ul className="list-disc pl-5 space-y-1">
-            <li>The timer begins as soon as you click <strong>Start Quiz Attempt</strong>.</li>
-            <li>Questions are presented one by one. Answers auto-save in real-time.</li>
-            <li>Timer warns at 30 seconds and 10 seconds remaining with pulsing visual indicators.</li>
-            <li>Auto-submits automatically when the countdown timer hits 0:00.</li>
+        <div className="p-5 rounded-3xl bg-purple-950/40 border-2 border-purple-800/80 space-y-2 text-xs text-purple-200 shadow-inner">
+          <h4 className="font-display font-black text-sm text-purple-300 flex items-center gap-2">
+            <Award className="w-4 h-4 text-amber-400" /> Arena Rules & Guidelines:
+          </h4>
+          <ul className="list-disc pl-5 space-y-1.5 font-semibold">
+            <li>The countdown timer starts as soon as you hit <strong>Launch Quest Attempt</strong>.</li>
+            <li>Questions are presented sequentially. Selected answers save automatically.</li>
+            <li>Timer turns amber at 30 seconds and flashes red at 10 seconds remaining.</li>
+            <li>Your attempt will automatically submit if the timer expires.</li>
           </ul>
         </div>
 
@@ -155,9 +163,18 @@ export const QuizDetailPage: React.FC = () => {
         <button
           onClick={handleStartAttempt}
           disabled={isStarting}
-          className="w-full btn-game btn-game-teal py-4 text-base font-extrabold flex items-center justify-center gap-3 shadow-xl"
+          className="w-full btn-game btn-game-teal py-4 text-base font-black flex items-center justify-center gap-3 shadow-game-teal group"
         >
-          {isStarting ? 'Entering Arena...' : 'Start Quiz Attempt'} <Play className="w-5 h-5 fill-slate-950" />
+          {isStarting ? (
+            <span className="flex items-center gap-2">
+              <div className="w-5 h-5 border-2 border-slate-950 border-t-transparent rounded-full animate-spin" />
+              Entering Arena...
+            </span>
+          ) : (
+            <>
+              <Sparkles className="w-5 h-5 fill-slate-950" /> Launch Quest Attempt <Play className="w-5 h-5 fill-slate-950 group-hover:translate-x-1 transition-transform" />
+            </>
+          )}
         </button>
       </motion.div>
     </div>

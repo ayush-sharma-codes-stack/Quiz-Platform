@@ -72,10 +72,10 @@ export const AdminQuizzesPage: React.FC = () => {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="font-display font-extrabold text-3xl sm:text-4xl text-white flex items-center gap-3">
-            <BookOpen className="w-8 h-8 text-teal-400" /> Quiz Management
+          <h1 className="font-display font-black text-3xl sm:text-4xl text-white flex items-center gap-3 tracking-tight">
+            <BookOpen className="w-9 h-9 text-teal-400" /> Quiz Management Console
           </h1>
-          <p className="text-slate-400 text-sm mt-1">
+          <p className="text-slate-300 font-semibold text-sm mt-1">
             Create, edit, publish, and manage assessment modules
           </p>
         </div>

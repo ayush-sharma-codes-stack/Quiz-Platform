@@ -4,50 +4,81 @@
 
 @layer base {
   body {
-    @apply bg-slate-950 text-slate-100 font-body transition-colors duration-300;
+    @apply bg-slate-950 text-slate-100 font-body transition-colors duration-300 antialiased;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.12) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(20, 184, 166, 0.1) 0px, transparent 50%),
+      radial-gradient(at 50% 50%, rgba(245, 158, 11, 0.05) 0px, transparent 50%);
+    background-attachment: fixed;
   }
 
   .light body {
-    @apply bg-slate-50 text-slate-900;
+    @apply bg-slate-100 text-slate-900;
+    background-image: 
+      radial-gradient(at 0% 0%, rgba(139, 92, 246, 0.08) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, rgba(20, 184, 166, 0.08) 0px, transparent 50%);
   }
 }
 
-/* Chunky Tactile Game Buttons */
+/* Chunky Tactile 3D Game Buttons */
 .btn-game {
-  @apply relative inline-flex items-center justify-center font-display font-bold rounded-2xl transition-[background-color,border-color,box-shadow,transform] duration-150 active:translate-y-1 active:shadow-none select-none cursor-pointer;
+  @apply relative inline-flex items-center justify-center font-display font-bold rounded-2xl border-b-4 transition-all duration-150 active:translate-y-1 active:border-b-0 select-none cursor-pointer tracking-wide;
 }
 
 .btn-game-purple {
-  @apply bg-purple-600 hover:bg-purple-500 text-white shadow-game-purple active:shadow-none;
+  @apply bg-purple-600 hover:bg-purple-500 text-white border-purple-800 shadow-game-purple active:shadow-none active:border-purple-600;
 }
 
 .btn-game-teal {
-  @apply bg-teal-500 hover:bg-teal-400 text-slate-950 shadow-game-teal active:shadow-none;
+  @apply bg-teal-500 hover:bg-teal-400 text-slate-950 border-teal-700 shadow-game-teal active:shadow-none active:border-teal-500;
 }
 
 .btn-game-amber {
-  @apply bg-amber-500 hover:bg-amber-400 text-slate-950 shadow-game-amber active:shadow-none;
+  @apply bg-amber-500 hover:bg-amber-400 text-slate-950 border-amber-700 shadow-game-amber active:shadow-none active:border-amber-500;
 }
 
 .btn-game-coral {
-  @apply bg-rose-600 hover:bg-rose-500 text-white shadow-game-coral active:shadow-none;
+  @apply bg-rose-600 hover:bg-rose-500 text-white border-rose-800 shadow-game-coral active:shadow-none active:border-rose-600;
 }
 
 .btn-game-emerald {
-  @apply bg-emerald-500 hover:bg-emerald-400 text-slate-950 shadow-game-emerald active:shadow-none;
+  @apply bg-emerald-500 hover:bg-emerald-400 text-slate-950 border-emerald-700 shadow-game-emerald active:shadow-none active:border-emerald-500;
+}
+
+.btn-game-indigo {
+  @apply bg-indigo-600 hover:bg-indigo-500 text-white border-indigo-800 shadow-game-indigo active:shadow-none active:border-indigo-600;
+}
+
+.btn-game-pink {
+  @apply bg-pink-600 hover:bg-pink-500 text-white border-pink-800 shadow-game-pink active:shadow-none active:border-pink-600;
+}
+
+.btn-game-cyan {
+  @apply bg-cyan-500 hover:bg-cyan-400 text-slate-950 border-cyan-700 shadow-game-cyan active:shadow-none active:border-cyan-500;
 }
 
 .btn-game-gray {
-  @apply bg-slate-700 hover:bg-slate-600 text-white shadow-game-gray active:shadow-none;
+  @apply bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-950 shadow-game-gray active:shadow-none active:border-slate-800;
 }
 
-/* Glassmorphism Cards */
+/* Glassmorphism & Game Cards */
 .game-card {
-  @apply bg-slate-900/80 border border-slate-800/80 backdrop-blur-md rounded-3xl p-6 transition-[background-color,border-color,box-shadow,transform] duration-200;
+  @apply bg-slate-900/90 border-2 border-slate-800/90 backdrop-blur-xl rounded-3xl p-6 transition-all duration-200 relative overflow-hidden;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+.game-card-hover {
+  @apply hover:-translate-y-1 hover:border-purple-500/50 hover:shadow-game-glow-purple;
 }
 
 .light .game-card {
-  @apply bg-white/90 border-slate-200/90 shadow-xl shadow-slate-200/50 text-slate-900;
+  @apply bg-white/95 border-slate-200 shadow-xl shadow-slate-300/40 text-slate-900;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08), inset 0 1px 0 0 rgba(255, 255, 255, 0.8);
+}
+
+/* Arcade Pill Badges */
+.badge-3d {
+  @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-xl font-display font-semibold text-xs border-b-2 shadow-sm uppercase tracking-wider select-none;
 }
 
 /* Smooth Custom Scrollbars */
