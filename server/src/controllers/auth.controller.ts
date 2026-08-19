@@ -10,7 +10,7 @@ import {
 } from '../utils/jwt';
 
 export async function signup(req: Request, res: Response) {
-  const { name, email, password, role } = req.body;
+  const { name, email, password } = req.body;
 
   const existingUser = await prisma.user.findUnique({ where: { email: email.toLowerCase() } });
   if (existingUser) {
@@ -26,7 +26,7 @@ export async function signup(req: Request, res: Response) {
       name,
       email: email.toLowerCase(),
       passwordHash,
-      role: role || 'STUDENT',
+      role: 'STUDENT',
       xp: 0,
       level: 1,
       streak: 0,

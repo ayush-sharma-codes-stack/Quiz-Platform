@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Gamepad2, User, Mail, Lock, Shield, ArrowRight, AlertCircle } from 'lucide-react';
+import { Gamepad2, User, Mail, Lock, ArrowRight, AlertCircle } from 'lucide-react';
 import { apiRequest } from '../services/api';
 import { useAuthStore } from '../store/authStore';
 
@@ -9,7 +9,6 @@ export const SignupPage: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState<'STUDENT' | 'ADMIN'>('STUDENT');
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -24,15 +23,11 @@ export const SignupPage: React.FC = () => {
     try {
       const res = await apiRequest('/auth/signup', {
         method: 'POST',
-        body: JSON.stringify({ name, email, password, role }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       login(res.user, res.accessToken);
-      if (res.user.role === 'ADMIN') {
-        navigate('/admin/dashboard');
-      } else {
-        navigate('/dashboard');
-      }
+      navigate('/dashboard');
     } catch (err: any) {
       if (err.errors && err.errors.length > 0) {
         setError(err.errors.map((e: any) => e.message).join(', '));
@@ -122,34 +117,6 @@ export const SignupPage: React.FC = () => {
                 placeholder="••••••••"
                 className="w-full bg-slate-950/90 border-2 border-slate-800 rounded-2xl pl-12 pr-4 py-3.5 text-sm font-bold text-white placeholder-slate-500 focus:outline-none focus:border-teal-500 transition-colors"
               />
-            </div>
-          </div>
-
-          {/* Role selector */}
-          <div>
-            <label className="block text-xs font-black uppercase tracking-wider text-slate-300 mb-2 font-display">
-              Select Role
-            </label>
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => setRole('STUDENT')}
-                className={`btn-game py-3 px-4 text-xs flex items-center justify-center gap-2 ${
-                  role === 'STUDENT' ? 'btn-game-purple' : 'btn-game-gray opacity-70'
-                }`}
-              >
-                <User className="w-4 h-4" /> Student
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setRole('ADMIN')}
-                className={`btn-game py-3 px-4 text-xs flex items-center justify-center gap-2 ${
-                  role === 'ADMIN' ? 'btn-game-teal' : 'btn-game-gray opacity-70'
-                }`}
-              >
-                <Shield className="w-4 h-4" /> Admin
-              </button>
             </div>
           </div>
 

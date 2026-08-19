@@ -10,7 +10,6 @@ export const signupSchema = z.object({
       .string()
       .min(8, 'Password must be at least 8 characters')
       .regex(passwordRegex, 'Password must contain at least 1 number and 1 special character'),
-    role: z.enum(['STUDENT', 'ADMIN']).optional().default('STUDENT'),
   }),
 });
 
